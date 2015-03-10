@@ -38,11 +38,18 @@ class PencaDocument(object):
                 self.status = True
 
     def makearchivepnc(self):
+        
         creationpath = self.tmpworkingpath + '/' + unicode(self.pnctitle)
         shutil.make_archive(self.workingpath + '/' + unicode(self.pnctitle), 'zip', creationpath)
-        os.rename(self.workingpath + '/' + unicode(self.pnctitle) + '.zip', self.workingpath + '/' + unicode(self.pnctitle) + '.pnc')
-        print 'All is go ok? Return True'
-        return True
+        try:
+            os.rename(self.workingpath + '/' + unicode(self.pnctitle) + '.zip', self.workingpath + '/' + unicode(self.pnctitle) + '.pnc')
+            print 'All is go ok? Return True'
+            return True
+        except:
+            os.remove(self.workingpath + '/' + unicode(self.pnctitle) + '.pnc')
+            os.rename(self.workingpath + '/' + unicode(self.pnctitle) + '.zip', self.workingpath + '/' + unicode(self.pnctitle) + '.pnc')
+            print 'Excepted but could recover. Return True'
+            return True
 
     def retchaplist(self):
         self.chapters.sort(key=lambda x: x.id)
