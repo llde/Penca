@@ -38,7 +38,6 @@ if __name__ == "__main__":
     for element in retlist:
         pncstart.openList.addItem(element)
     pncmainwindow.show()
-    pncmainwindow.dockpenca.hide()
     pncstart.exec_()
 
     sys.exit(app.exec_())

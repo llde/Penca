@@ -63,9 +63,7 @@ class mainpenca(QtGui.QMainWindow):
         self.actionChapters.triggered.connect(lambda: self.main_shoenv())  # Callbacks della finestra. Lambda è lentissimo.
         self.actionSave.triggered.connect(lambda: self.main_save())
         self.actionFullscreen.triggered.connect(lambda: self.main_gofull())
-        self.editchapters.clicked.connect(lambda: self.main_showchaplist())
         self.pagina.textChanged.connect(lambda: self.main_updatettext())
-        self.documentstat.clicked.connect(lambda: self.main_showstatics())
 
         QtGui.QShortcut(QtGui.QKeySequence(QtGui.QKeySequence.Save), self, lambda: self.main_save())  # Shotcut salva
         QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_F4), self, lambda: self.main_showstatics())
@@ -399,7 +397,6 @@ class openwindow(QtGui.QDialog):
         if listdocs:
             self.father.label.setText(listdocs[0].title)
             self.father.pagina.setText(listdocs[0].documentText)
-            self.father.sintextedit.setText(listdocs[0].synopse)
             self.father.environment.updatechap()
             self.father.main_updatettext()
 
