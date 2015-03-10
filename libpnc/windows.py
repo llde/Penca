@@ -38,13 +38,14 @@ class mainpenca(QtGui.QMainWindow):
     @ Parametri: app è l'applicazione Qt, base è il modulo base istanziato, idem per doc, parent è la finestra padre.
     Di default è None."""
 
-    def __init__(self, app, base, doc, parent=None):
+    def __init__(self, app, base, doc, stats, parent=None):
 
         QtGui.QMainWindow.__init__(self, parent)  # Init sempre necessario per definire una finestra in Qt
 
         self.App = app
         self.Base = base
         self.Doc = doc
+        self.stats = stats
 
         uic.loadUi('./libpnc/uipnc/pncmain.ui', self)  # Carico la GUI
         self.fullscreen = False
@@ -60,13 +61,17 @@ class mainpenca(QtGui.QMainWindow):
         self.toolBar.insertWidget(self.actionChapters, left_spacer)  # Inserisce prima di tutto
         self.toolBar.addWidget(right_spacer)  # Inserisce dopo
 
+        self.wordslabel = QtGui.QLabel("")
+        self.charlabel = QtGui.QLabel("")
+        self.statusBar().addWidget(self.wordslabel)
+        self.statusBar().addWidget(self.charlabel)
+
         self.actionChapters.triggered.connect(lambda: self.main_shoenv())  # Callbacks della finestra. Lambda è lentissimo.
         self.actionSave.triggered.connect(lambda: self.main_save())
         self.actionFullscreen.triggered.connect(lambda: self.main_gofull())
         self.pagina.textChanged.connect(lambda: self.main_updatettext())
 
         QtGui.QShortcut(QtGui.QKeySequence(QtGui.QKeySequence.Save), self, lambda: self.main_save())  # Shotcut salva
-        QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_F4), self, lambda: self.main_showstatics())
         QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_F2), self, lambda: self.main_shoenv())
         QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_F1), self, lambda: self.help.exec_())
         QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_F11), self, lambda: self.main_gofull())
@@ -90,11 +95,13 @@ class mainpenca(QtGui.QMainWindow):
         if self.fullscreen is False:
             self.showFullScreen()
             self.toolBar.hide()
+            self.statusPenca.hide()
             # BHO self.toolBar.setStyleSheet('QToolBar{background-color: rgba(255, 255, 255, 0)};')
             self.fullscreen = True
         elif self.fullscreen is True:
             self.showNormal()
             self.toolBar.show()
+            self.statusPenca.show()
             # BHO self.toolBar.setStyleSheet('')
             self.fullscreen = False
 
@@ -145,6 +152,10 @@ class mainpenca(QtGui.QMainWindow):
         for element in self.Doc.chapters:
             if element.id == self.Doc.index:
                 element.documentText = unicode(self.pagina.toPlainText())  # Testo sovrascritto nel capitolo.
+        words = self.stats.countwords(self.pagina.toPlainText())
+        self.wordslabel.setText(" " + str(words) + " words |")
+        words = self.stats.countchars(self.pagina.toPlainText())
+        self.charlabel.setText(" " + str(words) + " chars |")
         self.Doc.setStatus()
 
     def closeEvent(self, event):
@@ -449,7 +460,7 @@ class openwindow(QtGui.QDialog):
 
 class newpncwindow(QtGui.QDialog):
 
-    def __init__(self, base, doc,parent=None):
+    def __init__(self, base, doc, parent=None):
         super(newpncwindow, self).__init__(parent)
 
         self.Base = base
@@ -472,7 +483,15 @@ class newpncwindow(QtGui.QDialog):
             author = 'none'
         if not about:
             about = 'none'
-        self.Base.createnewfile(title, author, about)
+        ret = self.Base.createnewfile(title, author, about)
+        if not ret:
+            vdialog = QtGui.QMessageBox(self)
+            vdialog.setWindowTitle('Penca Info')
+            vdialog.setText('Project already exist,<br>try deleting first.')
+            vdialog.setIcon(QtGui.QMessageBox.Information)
+            vdialog.addButton(QtGui.QMessageBox.Close)
+            vdialog.exec_()
+            return False
         retlist = self.Base.returnpncfilelist()
         for element in retlist:
             self.father.openList.addItem(element)

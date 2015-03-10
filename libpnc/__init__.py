@@ -42,7 +42,7 @@ class PencaBaseModule(object):
 
         if os.path.exists(self.workingpath + '/' + str(title) + '.pnc'):
             print 'project already exist, return False'
-            return False
+            return False  # Progetto esiste
 
         creationpath = self.tmpworkingpath + '/' + str(title)
         if os.path.exists(creationpath):

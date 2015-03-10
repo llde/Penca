@@ -275,6 +275,8 @@ class PencaDocument(object):
             print htmltosave
             prettyhtml = htmltosave.prettify('utf-8')
 
+            os.remove(pni)  # Remove first file
+
             with codecs.open(pni, 'w') as f:
                 f.write(prettyhtml)
             self.setStatus(True)
@@ -345,3 +347,36 @@ class Pencapng(object):
         self.gender = None
         self.bio = None
         self.photoname = None
+
+
+class Pencastats():
+
+    def countwords (self, text):
+        words = len(unicode(text).split())
+        return words
+
+    def countchars(self, text):
+        words = len(unicode(text))  # Lunghezza del testo
+        return words
+
+    def mic(self, text, base, doc):
+        words = unicode(text).lower().split()  # parole
+        pg = None
+        thiscnt = 0
+        pgs = []
+        for element in doc.characters:  # Carico i personaggi papabili
+            pgs.append(element.name.lower())
+        for element in pgs:  # per ogni personaggio parto da zero a contare
+            cnt = 0
+            for elem in words:
+                if elem == element:  # Se trovo il pg aumento il counter
+                    cnt += 1
+            if cnt > thiscnt:  # Se il counter è maggiore, aumento il massimo
+                thiscnt = cnt
+                pg = element
+            elif cnt != 0 and cnt == thiscnt:  # Se invece è diverso da 0 AND uguale a thiscount
+                pg = pg + ', ' + element
+        if pg is None:  # Caso None
+            return None
+        elif pg is not None:  # caso non None
+            return pg

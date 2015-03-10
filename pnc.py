@@ -29,9 +29,10 @@ if __name__ == "__main__":
     Base = libpnc.PencaBaseModule(path)
     Doc = Document.PencaDocument()
     Doc.fillprojectpath(Base)
+    Stats = Document.Pencastats()
 
     # Show windows
-    pncmainwindow = windows.mainpenca(app, Base, Doc)
+    pncmainwindow = windows.mainpenca(app, Base, Doc, Stats)
     pncstart = windows.openwindow(Base, Doc, pncmainwindow)
 
     retlist = Base.returnpncfilelist()

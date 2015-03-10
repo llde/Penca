@@ -98,7 +98,7 @@
     <string>toolBar</string>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgba(255, 255, 255, 0);</string>
+    <string notr="true"/>
    </property>
    <property name="movable">
     <bool>false</bool>
@@ -110,7 +110,7 @@
     </size>
    </property>
    <property name="toolButtonStyle">
-    <enum>Qt::ToolButtonIconOnly</enum>
+    <enum>Qt::ToolButtonTextBesideIcon</enum>
    </property>
    <property name="floatable">
     <bool>false</bool>
