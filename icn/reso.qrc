@@ -1,0 +1,19 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>32x32/user-4-remove.png</file>
+    <file>32x32/user-4-add.png</file>
+    <file>32x32/ellipsis.png</file>
+    <file>32x32/document-remove.png</file>
+    <file>32x32/document-add.png</file>
+    <file>32x32/expand-2.png</file>
+    <file>32x32/asterisk.png</file>
+    <file>32x32/user-4.png</file>
+    <file>32x32/floppy.png</file>
+    <file>32x32/users.png</file>
+    <file>32x32/settings-2.png</file>
+    <file>32x32/bin-2.png</file>
+    <file>32x32/browser-close-2.png</file>
+    <file>32x32/folder-2.png</file>
+    <file>32x32/book-2.png</file>
+  </qresource>
+</RCC>
