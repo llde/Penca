@@ -50,7 +50,6 @@ class mainpenca(QtGui.QMainWindow):
         uic.loadUi('./libpnc/uipnc/pncmain.ui', self)  # Carico la GUI
         self.fullscreen = False
         self.environment = environment(self.Base, self.Doc, self)
-        self.stat = staticwindow(self.Base, self.Doc, self)
         self.help = help(self)
 
         left_spacer = QtGui.QWidget()  # Widget della barra, per spaziare
@@ -63,8 +62,10 @@ class mainpenca(QtGui.QMainWindow):
 
         self.wordslabel = QtGui.QLabel("")
         self.charlabel = QtGui.QLabel("")
+        self.flabel = QtGui.QLabel("Press F1 for help")
         self.statusBar().addWidget(self.wordslabel)
         self.statusBar().addWidget(self.charlabel)
+        self.statusBar().addWidget(self.flabel)
 
         self.actionChapters.triggered.connect(lambda: self.main_shoenv())  # Callbacks della finestra. Lambda è lentissimo.
         self.actionSave.triggered.connect(lambda: self.main_save())
@@ -265,63 +266,6 @@ class help(QtGui.QDialog):
     def __init__(self, parent=None):
         QtGui.QDialog.__init__(self, parent)
         uic.loadUi('./libpnc/uipnc/help.ui', self)
-
-class staticwindow(QtGui.QDialog):
-
-    """ Classe della finestra delle statistiche, quella che gestisce i conteggi.
-    @ Parametri: app è l'applicazione Qt, base è il modulo base istanziato, idem per doc, parent è la finestra padre.
-    Di default è None."""
-
-    def __init__(self, base, doc, parent=None):
-
-        QtGui.QDialog.__init__(self, parent)
-        self.Base = base
-        self.Doc = doc
-        self.father = parent
-
-        uic.loadUi('./libpnc/uipnc/statics.ui', self)  # Carico la GUI
-
-    def static_updatewords(self):
-
-        """ Funzione che si occupa di stampare nel label della finestra il numero delle parole presenti nell'area
-        di testo. Usa il metodo split(). """
-
-        words = len(unicode(self.father.pagina.toPlainText()).split())
-        self.wordslabel.setText(unicode(words))
-
-    def static_updatechars(self):
-
-        """ Funzione che si occupa di stampare nel label della finestra il numero dei caratteri presenti nell'area
-        di testo. """
-
-        words = len(unicode(self.father.pagina.toPlainText()))  # Lunghezza del testo
-        self.charslabel.setText(unicode(words))
-
-    def static_updatemic(self):
-
-        """ Aggiorna il personaggio più influente, most influent character, calcolando anche un exequo
-        nel caso ve ne fossero più di uno."""
-
-        words = unicode(self.father.pagina.toPlainText()).lower().split()  # parole
-        pg = None
-        thiscnt = 0
-        pgs = []
-        for element in self.Doc.characters:  # Carico i personaggi papabili
-            pgs.append(element.name.lower())
-        for element in pgs:  # per ogni personaggio parto da zero a contare
-            cnt = 0
-            for elem in words:
-                if elem == element:  # Se trovo il pg aumento il counter
-                    cnt += 1
-            if cnt > thiscnt:  # Se il counter è maggiore, aumento il massimo
-                thiscnt = cnt
-                pg = element
-            elif cnt != 0 and cnt == thiscnt:  # Se invece è diverso da 0 AND uguale a thiscount
-                pg = pg + ', ' + element
-        if pg is None:  # Caso None
-            self.charlabel.setText('No char.')
-        elif pg is not None:  # caso non None
-            self.charlabel.setText(pg)
 
 
 class openwindow(QtGui.QDialog):

@@ -136,7 +136,7 @@
      <normaloff>:/icons/32x32/book-2.png</normaloff>:/icons/32x32/book-2.png</iconset>
    </property>
    <property name="text">
-    <string>Info</string>
+    <string>Book</string>
    </property>
   </action>
   <action name="actionSave">

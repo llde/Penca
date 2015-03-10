@@ -47,19 +47,9 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label_4">
-     <property name="text">
-      <string>F4 - Statistics </string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QLabel" name="label_5">
      <property name="text">
-      <string>F11 - Fullscreen</string>
+      <string>F11 - Enter/Exit fullscreen mode</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
