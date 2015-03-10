@@ -129,6 +129,7 @@
    <addaction name="separator"/>
    <addaction name="actionFullscreen"/>
   </widget>
+  <widget class="QStatusBar" name="statusPenca"/>
   <action name="actionChapters">
    <property name="icon">
     <iconset resource="../../icn/reso.qrc">
